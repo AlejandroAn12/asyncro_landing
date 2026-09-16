@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>asyncro — desarrollo web</title>
+<meta name="description" content="Desarrollo sitios y aplicaciones web modernas. Un solo desarrollador, de principio a fin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#150E2B;
+    --violet:#7B2FF7;
+    --violet-deep:#4A1BA3;
+    --cyan:#14E8FF;
+    --coral:#FF3D68;
+    --paper:#F4F0FF;
+    --paper-dim:#C9B8FF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper); color:var(--ink); font-family:'Manrope',sans-serif; overflow-x:hidden;}
+  img,svg{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .display{font-family:'Bricolage Grotesque', sans-serif; font-weight:800; letter-spacing:-0.03em;}
+  section{padding:120px 7vw; position:relative;}
+  .wrap{max-width:1240px; margin:0 auto;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 7vw; background:rgba(21,14,43,0.86); backdrop-filter:blur(10px);
+    color:var(--paper);
+  }
+  nav .brand{display:flex; align-items:center; gap:12px;}
+  nav .brand svg{width:32px;}
+  nav .brand span{font-family:'Bricolage Grotesque'; font-weight:800; font-size:19px;}
+  nav .links{display:flex; align-items:center; gap:36px; font-size:15px; font-weight:600;}
+  nav .links a{opacity:0.85; transition:opacity .15s;}
+  nav .links a:hover{opacity:1;}
+  nav .cta{background:var(--coral); color:#fff; font-weight:700; font-size:14px; padding:11px 22px; border-radius:2px;}
+  nav .burger{display:none;}
+  @media(max-width:760px){
+    nav .links a:not(.cta){display:none;}
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    min-height:92vh;
+    background:var(--ink);
+    color:var(--paper);
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 7vw;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .glow-a{position:absolute; width:900px; height:900px; border-radius:50%;
+    background:radial-gradient(circle, rgba(123,47,247,0.55) 0%, rgba(123,47,247,0) 68%);
+    right:-360px; top:-380px;}
+  .hero .glow-b{position:absolute; width:640px; height:640px; border-radius:50%;
+    background:radial-gradient(circle, rgba(20,232,255,0.28) 0%, rgba(20,232,255,0) 70%);
+    left:-260px; bottom:-260px;}
+  .hero .band{
+    position:absolute; left:-10%; right:-10%; height:220px; top:60%;
+    background:linear-gradient(100deg, var(--violet) 0%, var(--violet-deep) 100%);
+    transform:rotate(-4deg); opacity:0.9; z-index:0;
+  }
+  .hero-inner{position:relative; z-index:2; max-width:900px;}
+  .hero .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:28px;}
+  .hero .eyebrow svg{width:34px; animation:spinLoose 14s linear infinite;}
+  @keyframes spinLoose{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .hero .eyebrow span{font-size:15px; font-weight:700; color:var(--paper-dim);}
+  .hero h1{font-size:clamp(42px,6.4vw,84px); line-height:1.02;}
+  .hero h1 .cut{
+    display:inline-block; background:var(--coral); color:var(--ink);
+    padding:0 0.08em; transform:rotate(-1deg);
+  }
+  .hero p.sub{
+    font-size:clamp(18px,2vw,22px); font-weight:500; max-width:52ch;
+    margin-top:30px; color:#fff; line-height:1.6;
+  }
+  .hero .ctas{display:flex; gap:18px; margin-top:44px; flex-wrap:wrap;}
+  .btn-primary{background:var(--coral); color:#fff; font-weight:800; font-size:15px; padding:17px 30px; border-radius:2px; display:inline-block;}
+  .btn-ghost{border:1.5px solid rgba(255,255,255,0.35); color:#fff; font-weight:700; font-size:15px; padding:16px 28px; border-radius:2px; display:inline-block;}
+
+  /* ================= SERVICIOS ================= */
+  .services{background:var(--paper);}
+  .sec-head{max-width:52ch; margin-bottom:64px;}
+  .sec-head .kicker{font-size:14px; font-weight:700; color:var(--violet); margin-bottom:14px;}
+  .sec-head h2{font-size:clamp(32px,4.4vw,54px); line-height:1.08;}
+  .sec-head p{margin-top:16px; font-size:17px; color:#3B3157; line-height:1.7;}
+
+  .service-row{
+    display:grid; grid-template-columns:60px 1fr 1.1fr; gap:36px;
+    padding:38px 0; border-top:1px solid #DCCFFF; align-items:start;
+  }
+  .services .service-row:last-child{border-bottom:1px solid #DCCFFF;}
+  .service-row .bar{width:10px; height:44px; border-radius:2px;}
+  .service-row h3{font-family:'Bricolage Grotesque'; font-weight:800; font-size:clamp(22px,2.6vw,30px);}
+  .service-row p{font-size:16px; color:#3B3157; line-height:1.7; max-width:52ch;}
+  @media(max-width:760px){ .service-row{grid-template-columns:24px 1fr; grid-template-rows:auto auto;} .service-row .bar{height:24px;} .service-row p{grid-column:2;} }
+
+  /* ================= PROCESO ================= */
+  .process{background:var(--ink); color:var(--paper);}
+  .process .sec-head h2, .process .sec-head p{color:#fff;}
+  .process .sec-head p{color:var(--paper-dim);}
+  .process .sec-head .kicker{color:var(--cyan);}
+  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:rgba(255,255,255,0.14);}
+  .step{background:var(--ink); padding:38px 30px 44px;}
+  .step .num{font-family:'Bricolage Grotesque'; font-weight:800; font-size:15px; color:var(--coral); margin-bottom:22px;}
+  .step h3{font-family:'Bricolage Grotesque'; font-weight:800; font-size:20px; margin-bottom:14px; line-height:1.2;}
+  .step p{font-size:15px; color:var(--paper-dim); line-height:1.65;}
+  @media(max-width:900px){ .steps{grid-template-columns:1fr 1fr;} }
+  @media(max-width:560px){ .steps{grid-template-columns:1fr;} }
+
+  /* ================= POR QUE ================= */
+  .why{background:var(--paper);}
+  .why-grid{display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start;}
+  .why-grid h2{font-size:clamp(32px,4.4vw,54px); line-height:1.08; max-width:12ch;}
+  .why-list{display:flex; flex-direction:column; gap:34px;}
+  .why-item{display:flex; gap:20px;}
+  .why-item .dot{width:12px; height:12px; border-radius:50%; margin-top:8px; flex-shrink:0;}
+  .why-item h4{font-family:'Bricolage Grotesque'; font-weight:800; font-size:19px; margin-bottom:8px;}
+  .why-item p{font-size:15.5px; color:#3B3157; line-height:1.7;}
+  @media(max-width:860px){ .why-grid{grid-template-columns:1fr; gap:40px;} }
+
+  /* ================= STACK ================= */
+  .stack{background:var(--ink); color:var(--paper);}
+  .stack .sec-head h2{color:#fff;}
+  .stack .sec-head p{color:var(--paper-dim);}
+  .stack .sec-head .kicker{color:var(--cyan);}
+  .pills{display:flex; flex-wrap:wrap; gap:14px;}
+  .pill{
+    border:1.5px solid rgba(255,255,255,0.22); padding:12px 22px; border-radius:100px;
+    font-size:15px; font-weight:600; color:#fff;
+  }
+  .pill.on{background:var(--violet); border-color:var(--violet);}
+  .pill.on2{background:var(--coral); border-color:var(--coral);}
+
+  /* ================= CONTACTO ================= */
+  .contact{
+    background:linear-gradient(135deg,#150E2B 0%,#3A1780 65%,#150E2B 100%);
+    color:var(--paper); text-align:center; overflow:hidden; position:relative;
+  }
+  .contact .blob{position:absolute; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle, rgba(20,232,255,0.30), transparent 70%); left:-160px; top:-180px;}
+  .contact-inner{position:relative; z-index:2; max-width:720px; margin:0 auto;}
+  .contact h2{font-size:clamp(34px,5.4vw,64px); line-height:1.05; color:#fff;}
+  .contact p{margin-top:22px; font-size:18px; color:var(--paper-dim); line-height:1.7;}
+  .contact .email{
+    display:inline-block; margin-top:40px; font-family:'Bricolage Grotesque'; font-weight:800;
+    font-size:clamp(22px,3.4vw,34px); color:#fff; border-bottom:3px solid var(--coral); padding-bottom:6px;
+  }
+  .contact .subnote{margin-top:22px; font-size:14px; color:var(--paper-dim); opacity:0.75;}
+
+  /* ================= FOOTER ================= */
+  footer{
+    padding:44px 7vw; background:#FBF9FF; display:flex; align-items:center; justify-content:space-between;
+    font-size:14px; color:#6B5FA0; flex-wrap:wrap; gap:16px;
+  }
+  footer .fbrand{display:flex; align-items:center; gap:10px;}
+  footer .fbrand svg{width:22px;}
+  footer .flinks{display:flex; gap:26px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 47 18 C 21 40, 21 80, 47 102" fill="none" stroke="#7B2FF7" stroke-width="14" stroke-linecap="round"/>
+      <path d="M 73 18 C 99 40, 99 80, 73 102" fill="none" stroke="#14E8FF" stroke-width="14" stroke-linecap="round"/>
+      <line x1="52" y1="48" x2="68" y2="72" stroke="#FF3D68" stroke-width="11" stroke-linecap="round"/>
+    </svg>
+    <span>asyncro</span>
+  </div>
+  <div class="links">
+    <a href="#servicios">Servicios</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#stack">Stack</a>
+    <a href="#contacto" class="cta">Escribime</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="glow-a"></div>
+  <div class="glow-b"></div>
+  <div class="band"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 47 18 C 21 40, 21 80, 47 102" fill="none" stroke="#7B2FF7" stroke-width="14" stroke-linecap="round"/>
+        <path d="M 73 18 C 99 40, 99 80, 73 102" fill="none" stroke="#14E8FF" stroke-width="14" stroke-linecap="round"/>
+        <line x1="52" y1="48" x2="68" y2="72" stroke="#FF3D68" stroke-width="11" stroke-linecap="round"/>
+      </svg>
+      <span>Desarrollo web a medida</span>
+    </div>
+    <h1 class="display">Sitios y apps que se sienten <span class="cut">rápidos</span> de verdad.</h1>
+    <p class="sub">Diseño y desarrollo cada proyecto, de principio a fin. Eso significa comunicación directa, decisiones rápidas y un código que entiende una sola persona: la que lo escribió.</p>
+    <div class="ctas">
+      <a href="#contacto" class="btn-primary">Escribeme tu proyecto</a>
+      <a href="#proceso" class="btn-ghost">Ver cómo trabajo</a>
+    </div>
+  </div>
+</div>
+
+<section class="services" id="servicios">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Servicios</div>
+      <h2 class="display">En qué te puedo ayudar</h2>
+      <p>Tres formas de trabajar juntos, según en qué punto esté tu proyecto.</p>
+    </div>
+
+    <div class="service-row">
+      <div class="bar" style="background:var(--violet);"></div>
+      <h3 class="display">Sitios web</h3>
+      <p>Landing pages, sitios institucionales y portfolios. Rápidos de cargar, fáciles de mantener y sin plantillas que se notan a leguas.</p>
+    </div>
+    <div class="service-row">
+      <div class="bar" style="background:var(--coral);"></div>
+      <h3 class="display">Aplicaciones web</h3>
+      <p>Herramientas internas, paneles de control y productos con lógica real detrás — no solo una interfaz bonita, sino algo que hace un trabajo concreto.</p>
+    </div>
+    <div class="service-row">
+      <div class="bar" style="background:var(--cyan);"></div>
+      <h3 class="display">Mejoras y mantenimiento</h3>
+      <p>¿Ya tienes un sitio o una app que necesita actualizarse, arreglarse o simplemente andar mejor? También me hago cargo de eso.</p>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="proceso">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Proceso</div>
+      <h2 class="display">¿Cómo trabajo?</h2>
+      <p>Sin caja negra: en cada etapa sabes exactamente en que está tu proyecto.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Diagnóstico</h3>
+        <p>Hablamos de qué necesitas y que problema tiene que resolver el sitio o la app.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Propuesta y alcance</h3>
+        <p>Te paso una propuesta clara: que incluye, cuánto tarda y cuánto cuesta. Sin letra chica.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Desarrollo</h3>
+        <p>Construyo el proyecto con avances que puedes ver a medida que pasa, no un silencio hasta el final.</p>
+      </div>
+      <div class="step">
+        <div class="num">04</div>
+        <h3>Lanzamiento y soporte</h3>
+        <p>Subimos a producción y me quedo cerca por si algo hay que ajustar una vez que está en vivo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-grid">
+    <h2 class="display">Por qué trabajar conmigo</h2>
+    <div class="why-list">
+      <div class="why-item">
+        <div class="dot" style="background:var(--violet);"></div>
+        <div>
+          <h4 class="display">Hablas con quien escribe el código</h4>
+          <p>Nada se pierde entre un vendedor, un project manager y el desarrollador. Solo somos tú y yo, todo el proceso.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="dot" style="background:var(--coral);"></div>
+        <div>
+          <h4 class="display">Decisiones rápidas</h4>
+          <p>No hay reuniones internas que esperar. Si hay que ajustar algo, se ajusta apenas lo hablamos.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="dot" style="background:var(--cyan);"></div>
+        <div>
+          <h4 class="display">Código que se puede mantener</h4>
+          <p>Cada proyecto se entrega ordenado y documentado, pensado para que lo puedas seguir usando sin depender de mí para todo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stack" id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Stack</div>
+      <h2 class="display">¿Con que construyo?</h2>
+      <p>Herramientas modernas, elegidas según lo que necesita cada proyecto — no la misma receta para todo.</p>
+    </div>
+    <div class="pills">
+      <span class="pill on">Angular / Next.js</span>
+      <span class="pill">TypeScript</span>
+      <span class="pill on2">Node.js</span>
+      <span class="pill">PostgreSQL</span>
+      <span class="pill">Tailwind CSS</span>
+      <span class="pill">APIs REST / GraphQL</span>
+      <span class="pill">Vercel / AWS</span>
+      <span class="pill">Docker</span>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="blob"></div>
+  <div class="contact-inner">
+    <h2 class="display">¿Tienes un proyecto en mente?</h2>
+    <p>Cuentame de que se trata y en un par de días te llega una propuesta concreta: alcance, tiempos y precio.</p>
+    <a href="mailto:hola@asyncro.app" class="email">hola@asyncro.app</a>
+    <!-- <div class="subnote">Reemplaza este correo por el tuyo antes de publicar el sitio.</div> -->
+  </div>
+</section>
+
+<footer>
+  <div class="fbrand">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 47 18 C 21 40, 21 80, 47 102" fill="none" stroke="#7B2FF7" stroke-width="14" stroke-linecap="round"/>
+      <path d="M 73 18 C 99 40, 99 80, 73 102" fill="none" stroke="#14E8FF" stroke-width="14" stroke-linecap="round"/>
+      <line x1="52" y1="48" x2="68" y2="72" stroke="#FF3D68" stroke-width="11" stroke-linecap="round"/>
+    </svg>
+    <span>© 2026 asyncro</span>
+  </div>
+  <div class="flinks">
+    <a href="#servicios">Servicios</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+</body>
+</html>
